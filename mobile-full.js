@@ -58,10 +58,11 @@
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js').then(function (reg) {
         try { reg.update(); } catch (e) {}
-        var reloaded = false;
         navigator.serviceWorker.addEventListener('controllerchange', function () {
-          if (reloaded) return;
-          reloaded = true;
+          try {
+            if (sessionStorage.getItem('dtSwReloaded')) return;
+            sessionStorage.setItem('dtSwReloaded', '1');
+          } catch (e) { return; }
           location.reload();
         });
       }).catch(function () {});
