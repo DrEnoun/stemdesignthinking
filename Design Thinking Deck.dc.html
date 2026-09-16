@@ -6,6 +6,9 @@
 <script src="./support.js"></script>
 </head>
 <body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><rect width="512" height="512" fill="#06122f"/><circle cx="256" cy="256" r="150" fill="#0A1A4D" stroke="#22D3EE" stroke-width="16"/><circle cx="256" cy="256" r="108" fill="#FFD93D"/><text x="256" y="256" font-family="Arial, sans-serif" font-size="96" font-weight="800" fill="#0A1A4D" text-anchor="middle" dominant-baseline="central">DT</text></svg>
+</template>
 <x-dc>
 <helmet>
   <link rel="manifest" href="manifest.json" />
@@ -31,8 +34,8 @@
     @keyframes dtRing { 0% { transform:scale(.7); opacity:.55 } 100% { transform:scale(2.4); opacity:0 } }
     @media (orientation: portrait) and (max-width: 950px) { #dt-rotate { display: flex !important; } }
   </style>
+  <script src="./mobile-full.js"></script>
   <script>
-    if ('serviceWorker' in navigator) window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
     (function () {
       var x0 = 0, y0 = 0, t0 = 0;
       document.addEventListener('touchstart', function (e) {
@@ -64,7 +67,7 @@
     </div>
   </div>
 
-  <x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+  <x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" no-rail="true" hint-size="100%,100%">
 
   <section data-label="01 Tajuk" data-screen-label="01" data-speaker-notes="Perkenalkan diri dan tema: Design Thinking sebagai kaedah inovasi. Tukar idea kepada inovasi." style="width:100%;height:100%;background-image:url('assets/s01.png');background-size:cover;background-position:center;font-family:'Nunito',sans-serif">
     <div style="position:relative;width:100%;height:100%">

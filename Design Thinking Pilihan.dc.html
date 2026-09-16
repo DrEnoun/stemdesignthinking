@@ -81,6 +81,13 @@ class Component extends DCLogic {
       other: 'LIHAT JAWAPAN “MASALAH”'
     }
   };
+  componentDidMount() {
+    const stage = document.querySelector('deck-stage');
+    if (stage && !stage.hasAttribute('no-rail')) {
+      stage.setAttribute('no-rail', 'true');
+      window.dispatchEvent(new Event('resize'));
+    }
+  }
   sfx(name) {
     const s = window.DTSFX;
     if (s && s[name]) { try { s[name](); } catch (e) {} }
