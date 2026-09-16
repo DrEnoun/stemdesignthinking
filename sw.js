@@ -1,5 +1,5 @@
 /* Service worker: simpan slaid & permainan untuk kegunaan luar talian. */
-var CACHE = 'design-thinking-v1';
+var CACHE = 'design-thinking-v5';
 var PRECACHE = [
   "./",
   "./index.html",
@@ -11,6 +11,7 @@ var PRECACHE = [
   "./deck-stage.js",
   "./doc-page.js",
   "./sfx.js",
+  "./mobile-full.js",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -49,6 +50,25 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
+  var url = new URL(req.url);
+  var fresh = /\.(js|html)$/i.test(url.pathname) || url.pathname.endsWith('/');
+  if (fresh) {
+    // Network-first for code/markup: kod terkini sentiasa digunakan, cache jadi sandaran luar talian.
+    e.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.ok) {
+          var copy = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(req, copy).catch(function () {}); });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req, { ignoreSearch: true }).then(function (hit) {
+          return hit || caches.match('./index.html');
+        });
+      })
+    );
+    return;
+  }
   e.respondWith(
     caches.match(req, { ignoreSearch: true }).then(function (hit) {
       if (hit) return hit;
