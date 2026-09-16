@@ -36,8 +36,8 @@
     <div style="margin-left:auto;display:flex;align-items:center;gap:16px">
       <div style="font-size:30px;font-weight:800;color:#FFD93D">{{ scoreLabel }}</div>
       <sc-if value="{{ isGame }}" hint-placeholder-val="{{ true }}">
-        <div onClick="{{ onMenu }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:10px 26px;font-size:28px;font-weight:800;color:#7DD3FC;letter-spacing:1px;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M3 10.5 12 3l9 7.5" /><path d="M5.5 9.5V21h13V9.5" /></svg>MENU PERMAINAN</div>
-        <div onClick="{{ onNext }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:12px 28px;font-size:28px;font-weight:800;color:#0A1A4D;letter-spacing:1px;display:inline-flex;align-items:center;gap:12px;">{{ nextLabel }}<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 12h15" /><path d="M13 6l6 6-6 6" /></svg></div>
+        <div role="button" tabindex="0" onClick="{{ onMenu }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:10px 26px;font-size:28px;font-weight:800;color:#7DD3FC;letter-spacing:1px;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M3 10.5 12 3l9 7.5" /><path d="M5.5 9.5V21h13V9.5" /></svg>MENU PERMAINAN</div>
+        <div role="button" tabindex="0" onClick="{{ onNext }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:12px 28px;font-size:28px;font-weight:800;color:#0A1A4D;letter-spacing:1px;display:inline-flex;align-items:center;gap:12px;">{{ nextLabel }}<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 12h15" /><path d="M13 6l6 6-6 6" /></svg></div>
       </sc-if>
     </div>
   </div>
@@ -51,20 +51,20 @@
         <div style="flex:none;font-size:28px;font-weight:800;color:#A3E635;letter-spacing:2px">KAD LANGKAH</div>
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px">
           <sc-for list="{{ pool }}" as="chip" hint-placeholder-count="5">
-            <div draggable="true" onDragStart="{{ chip.onDragStart }}" onClick="{{ chip.onClick }}" style="cursor:grab;background:#0F2A6B;border:4px solid {{ chip.border }};border-radius:20px;padding:12px 24px;font-family:'Baloo 2',cursive;font-size:34px;font-weight:700;color:{{ chip.border }};letter-spacing:1px;box-shadow:{{ chip.glow }}">{{ chip.t }}</div>
+            <div role="button" tabindex="0" draggable="true" onDragStart="{{ chip.onDragStart }}" onClick="{{ chip.onClick }}" style="cursor:grab;background:#0F2A6B;border:4px solid {{ chip.border }};border-radius:20px;padding:12px 24px;font-family:'Baloo 2',cursive;font-size:34px;font-weight:700;color:{{ chip.border }};letter-spacing:1px;box-shadow:{{ chip.glow }}">{{ chip.t }}</div>
           </sc-for>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px;min-height:0">
         <sc-for list="{{ slots }}" as="slot" hint-placeholder-count="5">
-          <div onClick="{{ slot.onClick }}" onDragOver="{{ slot.onDragOver }}" onDrop="{{ slot.onDrop }}" style="flex:1;display:flex;align-items:center;gap:22px;background:{{ slot.bg }};border:4px dashed {{ slot.border }};border-radius:22px;padding:0 28px;cursor:pointer;animation:{{ slot.anim }}">
+          <div role="button" tabindex="0" onClick="{{ slot.onClick }}" onDragOver="{{ slot.onDragOver }}" onDrop="{{ slot.onDrop }}" style="flex:1;display:flex;align-items:center;gap:22px;background:{{ slot.bg }};border:4px dashed {{ slot.border }};border-radius:22px;padding:0 28px;cursor:pointer;animation:{{ slot.anim }}">
             <div style="width:60px;height:60px;flex:none;border-radius:50%;background:#FFD93D;color:#5B3A00;font-family:'Baloo 2',cursive;font-size:36px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ slot.n }}</div>
             <div style="font-family:'Baloo 2',cursive;font-size:40px;font-weight:700;color:{{ slot.ink }};letter-spacing:1px">{{ slot.t }}</div>
           </div>
         </sc-for>
         <div style="flex:none;display:flex;gap:18px">
-          <div onClick="{{ onCheck }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:16px 46px;font-size:34px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 13l5 5L20 6" /></svg>PERIKSA</div>
-          <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>MULA SEMULA</div>
+          <div role="button" tabindex="0" onClick="{{ onCheck }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:16px 46px;font-size:34px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 13l5 5L20 6" /></svg>PERIKSA</div>
+          <div role="button" tabindex="0" onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>MULA SEMULA</div>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
     <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:22px">
       <div style="flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:26px">
         <sc-for list="{{ cards }}" as="card" hint-placeholder-count="6">
-          <div onClick="{{ card.onClick }}" style="cursor:pointer;background:{{ card.bg }};border:5px solid {{ card.border }};border-radius:28px;padding:26px 30px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center">
+          <div role="button" tabindex="0" onClick="{{ card.onClick }}" style="cursor:pointer;background:{{ card.bg }};border:5px solid {{ card.border }};border-radius:28px;padding:26px 30px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center">
             <sc-if value="{{ card.front }}" hint-placeholder-val="{{ true }}">
               <div style="font-family:'Baloo 2',cursive;font-size:46px;font-weight:800;color:{{ card.border }};letter-spacing:1px;line-height:1.05;text-wrap:balance">{{ card.t }}</div>
               <div style="font-size:24px;font-weight:800;color:#7DD3FC;letter-spacing:2px">KLIK UNTUK BUKA</div>
@@ -87,8 +87,8 @@
         </sc-for>
       </div>
       <div style="flex:none;display:flex;gap:18px">
-        <div onClick="{{ onFlipAll }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:16px 46px;font-size:34px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z" /><circle cx="12" cy="12" r="2.8" /></svg>BUKA SEMUA</div>
-        <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>TUTUP SEMUA</div>
+        <div role="button" tabindex="0" onClick="{{ onFlipAll }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:16px 46px;font-size:34px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z" /><circle cx="12" cy="12" r="2.8" /></svg>BUKA SEMUA</div>
+        <div role="button" tabindex="0" onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>TUTUP SEMUA</div>
       </div>
     </div>
   </sc-if>
@@ -105,10 +105,10 @@
         </div>
         <div style="display:flex;flex-direction:column;gap:16px">
           <sc-for list="{{ left }}" as="item" hint-placeholder-count="5">
-            <div ref="{{ item.ref }}" onClick="{{ item.onClick }}" style="position:relative;flex:1;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;background:{{ item.bg }};border:5px solid {{ item.border }};border-radius:22px;padding:0 20px;font-family:'Baloo 2',cursive;font-size:36px;font-weight:700;color:{{ item.ink }};line-height:1.1;letter-spacing:1px">
+            <div role="button" tabindex="0" ref="{{ item.ref }}" onClick="{{ item.onClick }}" style="position:relative;flex:1;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;background:{{ item.bg }};border:5px solid {{ item.border }};border-radius:22px;padding:0 20px;font-family:'Baloo 2',cursive;font-size:36px;font-weight:700;color:{{ item.ink }};line-height:1.1;letter-spacing:1px">
               {{ item.t }}
               <sc-if value="{{ item.showHandle }}" hint-placeholder-val="{{ true }}">
-                <div onPointerDown="{{ item.onDown }}" style="position:absolute;right:-30px;top:50%;margin-top:-29px;width:58px;height:58px;border-radius:50%;background:{{ item.border }};color:#0A1A4D;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;touch-action:none;cursor:grab;z-index:6;box-shadow:0 5px 14px rgba(0,0,0,.45)">
+                <div role="button" tabindex="0" onPointerDown="{{ item.onDown }}" style="position:absolute;right:-30px;top:50%;margin-top:-29px;width:58px;height:58px;border-radius:50%;background:{{ item.border }};color:#0A1A4D;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;touch-action:none;cursor:grab;z-index:6;box-shadow:0 5px 14px rgba(0,0,0,.45)">
                   <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style="flex:none;pointer-events:none"><path d="M4 12h15" /><path d="M13 6l6 6-6 6" /></svg>
                 </div>
               </sc-if>
@@ -117,12 +117,12 @@
         </div>
         <div style="display:flex;flex-direction:column;gap:16px">
           <sc-for list="{{ right }}" as="item" hint-placeholder-count="5">
-            <div ref="{{ item.ref }}" onClick="{{ item.onClick }}" style="flex:1;cursor:pointer;display:flex;align-items:center;background:{{ item.bg }};border:5px solid {{ item.border }};border-radius:22px;padding:0 28px;font-size:32px;font-weight:800;color:{{ item.ink }};line-height:1.25;text-wrap:pretty;animation:{{ item.anim }}">{{ item.t }}</div>
+            <div role="button" tabindex="0" ref="{{ item.ref }}" onClick="{{ item.onClick }}" style="flex:1;cursor:pointer;display:flex;align-items:center;background:{{ item.bg }};border:5px solid {{ item.border }};border-radius:22px;padding:0 28px;font-size:32px;font-weight:800;color:{{ item.ink }};line-height:1.25;text-wrap:pretty;animation:{{ item.anim }}">{{ item.t }}</div>
           </sc-for>
         </div>
       </div>
       <div style="flex:none;display:flex;align-items:center;gap:18px">
-        <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>MULA SEMULA</div>
+        <div role="button" tabindex="0" onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>MULA SEMULA</div>
         <div style="font-size:30px;font-weight:800;color:{{ hintInk }}">{{ matchHint }}</div>
       </div>
     </div>
@@ -146,8 +146,8 @@
           </div>
         </div>
         <div style="flex:none;display:flex;gap:18px">
-          <div onClick="{{ onCheck }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:14px 40px;font-size:32px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 13l5 5L20 6" /></svg>PERIKSA</div>
-          <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:12px 34px;font-size:32px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>KOSONGKAN</div>
+          <div role="button" tabindex="0" onClick="{{ onCheck }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:14px 40px;font-size:32px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 13l5 5L20 6" /></svg>PERIKSA</div>
+          <div role="button" tabindex="0" onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:12px 34px;font-size:32px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>KOSONGKAN</div>
         </div>
       </div>
       <div style="min-height:0;background:#0A1A4D;border-radius:32px;padding:26px 30px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px;overflow:hidden">
@@ -166,7 +166,7 @@
     <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:26px">
       <div style="flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:26px">
         <sc-for list="{{ menuItems }}" as="item" hint-placeholder-count="4">
-          <div onClick="{{ item.onPlay }}" style="cursor:pointer;background:#0A1A4D;border:5px solid {{ item.border }};border-radius:28px;padding:26px 32px;box-sizing:border-box;display:flex;align-items:center;gap:28px">
+          <div role="button" tabindex="0" onClick="{{ item.onPlay }}" style="cursor:pointer;background:#0A1A4D;border:5px solid {{ item.border }};border-radius:28px;padding:26px 32px;box-sizing:border-box;display:flex;align-items:center;gap:28px">
             <div style="flex:none;width:96px;height:96px;border-radius:24px;background:{{ item.border }};color:#0A1A4D;font-family:'Baloo 2',cursive;font-size:56px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ item.no }}</div>
             <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
               <div style="font-family:'Baloo 2',cursive;font-size:40px;font-weight:700;color:#ffffff;line-height:1.05">{{ item.name }}</div>
@@ -187,7 +187,7 @@
           <div style="height:100%;width:{{ totalPct }};background:#A3E635;border-radius:999px"></div>
         </div>
         <div style="font-size:30px;font-weight:800;color:#ffffff">{{ rankLabel }}</div>
-        <div onClick="{{ onClearAll }}" style="cursor:pointer;flex:none;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:10px 26px;font-size:26px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>SET SEMULA</div>
+        <div role="button" tabindex="0" onClick="{{ onClearAll }}" style="cursor:pointer;flex:none;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:10px 26px;font-size:26px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>SET SEMULA</div>
       </div>
     </div>
   </sc-if>
