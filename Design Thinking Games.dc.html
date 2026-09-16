@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { margin: 0; background: #06122f; }
+    a { color: #22D3EE; }
+    a:hover { color: #FFD93D; }
+    input { font-family: 'Baloo 2', cursive; }
+    @keyframes dtShake { 10%,90% { transform:translateX(-6px) } 20%,80% { transform:translateX(10px) } 30%,50%,70% { transform:translateX(-14px) } 40%,60% { transform:translateX(14px) } 0%,100% { transform:translateX(0) } }
+  </style>
+  <script src="./sfx.js"></script>
+</helmet>
+
+<div style="width:100%;height:100%;box-sizing:border-box;background:#06122f;font-family:'Nunito',sans-serif;padding:56px 72px;display:flex;flex-direction:column;gap:28px;overflow:hidden">
+
+  <div style="flex:none;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+    <sc-if value="{{ isGame }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#2A1055;border:4px solid #EC4899;border-radius:999px;padding:10px 30px;font-family:'Baloo 2',cursive;font-size:34px;font-weight:700;color:#FFD93D;letter-spacing:2px">PERMAINAN {{ gameNo }}</div>
+      <div style="background:#0F2A6B;border:4px solid #A3E635;border-radius:999px;padding:10px 30px;font-size:30px;font-weight:800;color:#A3E635;letter-spacing:1px">{{ minuteLabel }}</div>
+      <div style="font-size:30px;font-weight:800;color:#7DD3FC;letter-spacing:1px">{{ kindLabel }}</div>
+    </sc-if>
+    <sc-if value="{{ isMenu }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#2A1055;border:4px solid #EC4899;border-radius:999px;padding:10px 30px;font-family:'Baloo 2',cursive;font-size:34px;font-weight:700;color:#FFD93D;letter-spacing:2px">PUSAT PERMAINAN</div>
+      <div style="font-size:30px;font-weight:800;color:#7DD3FC;letter-spacing:1px">4 PERMAINAN · 400 MATA</div>
+    </sc-if>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:16px">
+      <div style="font-size:30px;font-weight:800;color:#FFD93D">{{ scoreLabel }}</div>
+      <sc-if value="{{ isGame }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ onMenu }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:10px 26px;font-size:28px;font-weight:800;color:#7DD3FC;letter-spacing:1px;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M3 10.5 12 3l9 7.5" /><path d="M5.5 9.5V21h13V9.5" /></svg>MENU PERMAINAN</div>
+        <div onClick="{{ onNext }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:12px 28px;font-size:28px;font-weight:800;color:#0A1A4D;letter-spacing:1px;display:inline-flex;align-items:center;gap:12px;">{{ nextLabel }}<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 12h15" /><path d="M13 6l6 6-6 6" /></svg></div>
+      </sc-if>
+    </div>
+  </div>
+
+  <h1 style="margin:0;flex:none;font-family:'Baloo 2',cursive;font-size:78px;font-weight:800;color:#FFD93D;line-height:1;text-wrap:balance">{{ title }}</h1>
+  <div style="flex:none;font-size:34px;font-weight:700;color:#ffffff;line-height:1.3;text-wrap:pretty">{{ howTo }}</div>
+
+  <sc-if value="{{ isDrag }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);grid-template-rows:minmax(0,1fr);gap:44px">
+      <div style="min-height:0;background:#0A1A4D;border-radius:32px;padding:26px 30px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+        <div style="flex:none;font-size:28px;font-weight:800;color:#A3E635;letter-spacing:2px">KAD LANGKAH</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px">
+          <sc-for list="{{ pool }}" as="chip" hint-placeholder-count="5">
+            <div draggable="true" onDragStart="{{ chip.onDragStart }}" onClick="{{ chip.onClick }}" style="cursor:grab;background:#0F2A6B;border:4px solid {{ chip.border }};border-radius:20px;padding:12px 24px;font-family:'Baloo 2',cursive;font-size:34px;font-weight:700;color:{{ chip.border }};letter-spacing:1px;box-shadow:{{ chip.glow }}">{{ chip.t }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;min-height:0">
+        <sc-for list="{{ slots }}" as="slot" hint-placeholder-count="5">
+          <div onClick="{{ slot.onClick }}" onDragOver="{{ slot.onDragOver }}" onDrop="{{ slot.onDrop }}" style="flex:1;display:flex;align-items:center;gap:22px;background:{{ slot.bg }};border:4px dashed {{ slot.border }};border-radius:22px;padding:0 28px;cursor:pointer;animation:{{ slot.anim }}">
+            <div style="width:60px;height:60px;flex:none;border-radius:50%;background:#FFD93D;color:#5B3A00;font-family:'Baloo 2',cursive;font-size:36px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ slot.n }}</div>
+            <div style="font-family:'Baloo 2',cursive;font-size:40px;font-weight:700;color:{{ slot.ink }};letter-spacing:1px">{{ slot.t }}</div>
+          </div>
+        </sc-for>
+        <div style="flex:none;display:flex;gap:18px">
+          <div onClick="{{ onCheck }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:16px 46px;font-size:34px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 13l5 5L20 6" /></svg>PERIKSA</div>
+          <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>MULA SEMULA</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isFlip }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:22px">
+      <div style="flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:26px">
+        <sc-for list="{{ cards }}" as="card" hint-placeholder-count="6">
+          <div onClick="{{ card.onClick }}" style="cursor:pointer;background:{{ card.bg }};border:5px solid {{ card.border }};border-radius:28px;padding:26px 30px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center">
+            <sc-if value="{{ card.front }}" hint-placeholder-val="{{ true }}">
+              <div style="font-family:'Baloo 2',cursive;font-size:46px;font-weight:800;color:{{ card.border }};letter-spacing:1px;line-height:1.05;text-wrap:balance">{{ card.t }}</div>
+              <div style="font-size:24px;font-weight:800;color:#7DD3FC;letter-spacing:2px">KLIK UNTUK BUKA</div>
+            </sc-if>
+            <sc-if value="{{ card.back }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:24px;font-weight:800;color:#5B3A00;letter-spacing:2px">{{ card.t }}</div>
+              <div style="font-size:34px;font-weight:800;color:#0A1A4D;line-height:1.25;text-wrap:pretty">{{ card.d }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="flex:none;display:flex;gap:18px">
+        <div onClick="{{ onFlipAll }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:16px 46px;font-size:34px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z" /><circle cx="12" cy="12" r="2.8" /></svg>BUKA SEMUA</div>
+        <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>TUTUP SEMUA</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMatch }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:22px">
+      <div ref="{{ wrapRef }}" style="position:relative;flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);gap:86px">
+        <div style="position:absolute;inset:0;pointer-events:none;z-index:4">
+          <sc-for list="{{ arrows }}" as="a" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ a.x }}px;top:{{ a.y }}px;width:{{ a.len }}px;height:7px;background:{{ a.color }};border-radius:4px;transform-origin:0 50%;transform:rotate({{ a.angle }}deg);opacity:{{ a.opacity }}">
+              <div style="position:absolute;right:-20px;top:-10px;width:0;height:0;border-left:22px solid {{ a.color }};border-top:13px solid transparent;border-bottom:13px solid transparent"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <sc-for list="{{ left }}" as="item" hint-placeholder-count="5">
+            <div ref="{{ item.ref }}" onClick="{{ item.onClick }}" style="position:relative;flex:1;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;background:{{ item.bg }};border:5px solid {{ item.border }};border-radius:22px;padding:0 20px;font-family:'Baloo 2',cursive;font-size:36px;font-weight:700;color:{{ item.ink }};line-height:1.1;letter-spacing:1px">
+              {{ item.t }}
+              <sc-if value="{{ item.showHandle }}" hint-placeholder-val="{{ true }}">
+                <div onPointerDown="{{ item.onDown }}" style="position:absolute;right:-30px;top:50%;margin-top:-29px;width:58px;height:58px;border-radius:50%;background:{{ item.border }};color:#0A1A4D;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;touch-action:none;cursor:grab;z-index:6;box-shadow:0 5px 14px rgba(0,0,0,.45)">
+                  <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style="flex:none;pointer-events:none"><path d="M4 12h15" /><path d="M13 6l6 6-6 6" /></svg>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <sc-for list="{{ right }}" as="item" hint-placeholder-count="5">
+            <div ref="{{ item.ref }}" onClick="{{ item.onClick }}" style="flex:1;cursor:pointer;display:flex;align-items:center;background:{{ item.bg }};border:5px solid {{ item.border }};border-radius:22px;padding:0 28px;font-size:32px;font-weight:800;color:{{ item.ink }};line-height:1.25;text-wrap:pretty;animation:{{ item.anim }}">{{ item.t }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:none;display:flex;align-items:center;gap:18px">
+        <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:14px 40px;font-size:34px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>MULA SEMULA</div>
+        <div style="font-size:30px;font-weight:800;color:{{ hintInk }}">{{ matchHint }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCross }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px">
+      <div style="display:flex;flex-direction:column;gap:20px;min-height:0">
+        <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center">
+          <div style="height:100%;width:auto;max-width:100%;aspect-ratio:10/9;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));grid-template-rows:repeat(9,minmax(0,1fr));gap:6px">
+          <sc-for list="{{ cells }}" as="cell" hint-placeholder-count="90">
+            <div style="position:relative;min-width:0;min-height:0;background:{{ cell.bg }};border-radius:6px;animation:{{ cell.anim }}">
+              <sc-if value="{{ cell.on }}" hint-placeholder-val="{{ false }}">
+                <input value="{{ cell.val }}" onChange="{{ cell.onInput }}" maxlength="1" style="position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;border:3px solid {{ cell.border }};border-radius:6px;background:transparent;text-align:center;font-size:40px;font-weight:800;color:{{ cell.ink }};text-transform:uppercase;outline:none;padding:0" />
+                <sc-if value="{{ cell.num }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;left:5px;top:1px;font-family:'Nunito',sans-serif;font-size:24px;font-weight:800;color:#5B3A00;pointer-events:none">{{ cell.num }}</div>
+                </sc-if>
+              </sc-if>
+            </div>
+          </sc-for>
+          </div>
+        </div>
+        <div style="flex:none;display:flex;gap:18px">
+          <div onClick="{{ onCheck }}" style="cursor:pointer;background:#FFD93D;border-radius:999px;padding:14px 40px;font-size:32px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M4 13l5 5L20 6" /></svg>PERIKSA</div>
+          <div onClick="{{ onReset }}" style="cursor:pointer;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:12px 34px;font-size:32px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>KOSONGKAN</div>
+        </div>
+      </div>
+      <div style="min-height:0;background:#0A1A4D;border-radius:32px;padding:26px 30px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px;overflow:hidden">
+        <div style="font-size:28px;font-weight:800;color:#A3E635;letter-spacing:2px">PETUNJUK</div>
+        <sc-for list="{{ clues }}" as="clue" hint-placeholder-count="5">
+          <div style="display:flex;align-items:flex-start;gap:16px">
+            <div style="flex:none;width:48px;height:48px;border-radius:12px;background:#FFD93D;color:#5B3A00;font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ clue.num }}</div>
+            <div style="flex:1;min-width:0;font-size:28px;font-weight:800;color:#ffffff;line-height:1.25;text-wrap:pretty"><span style="color:#7DD3FC;letter-spacing:2px">{{ clue.dir }} · </span>{{ clue.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMenu }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:26px">
+      <div style="flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:26px">
+        <sc-for list="{{ menuItems }}" as="item" hint-placeholder-count="4">
+          <div onClick="{{ item.onPlay }}" style="cursor:pointer;background:#0A1A4D;border:5px solid {{ item.border }};border-radius:28px;padding:26px 32px;box-sizing:border-box;display:flex;align-items:center;gap:28px">
+            <div style="flex:none;width:96px;height:96px;border-radius:24px;background:{{ item.border }};color:#0A1A4D;font-family:'Baloo 2',cursive;font-size:56px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ item.no }}</div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+              <div style="font-family:'Baloo 2',cursive;font-size:40px;font-weight:700;color:#ffffff;line-height:1.05">{{ item.name }}</div>
+              <div style="font-size:26px;font-weight:700;color:#A7B6D6;line-height:1.25;text-wrap:pretty">{{ item.q }}</div>
+              <div style="display:flex;align-items:center;gap:14px">
+                <div style="font-size:30px;font-weight:800;color:#FFD93D;letter-spacing:2px">{{ item.stars }}</div>
+                <div style="font-size:28px;font-weight:800;color:{{ item.border }}">{{ item.pts }}</div>
+              </div>
+            </div>
+            <div style="flex:none;background:#FFD93D;border-radius:999px;padding:14px 32px;font-size:30px;font-weight:800;color:#0A1A4D;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" stroke="none" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M8 5l11 7-11 7Z" /></svg>MAIN</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="flex:none;display:flex;align-items:center;gap:24px;background:#0F2A6B;border:4px solid #A3E635;border-radius:28px;padding:22px 32px">
+        <div style="font-size:32px;font-weight:800;color:#A3E635;letter-spacing:2px">JUMLAH MATA</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:56px;font-weight:800;color:#FFD93D;line-height:1">{{ totalLabel }}</div>
+        <div style="flex:1;min-width:0;height:26px;background:#0A1A4D;border-radius:999px;overflow:hidden">
+          <div style="height:100%;width:{{ totalPct }};background:#A3E635;border-radius:999px"></div>
+        </div>
+        <div style="font-size:30px;font-weight:800;color:#ffffff">{{ rankLabel }}</div>
+        <div onClick="{{ onClearAll }}" style="cursor:pointer;flex:none;background:#0A1A4D;border:4px solid #7DD3FC;border-radius:999px;padding:10px 26px;font-size:26px;font-weight:800;color:#7DD3FC;display:inline-flex;align-items:center;gap:12px;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" style="flex:none"><path d="M20 12a8 8 0 1 1-2.4-5.7" /><path d="M20 4v5h-5" /></svg>SET SEMULA</div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;game&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;menu&quot;,&quot;drag&quot;,&quot;flip&quot;,&quot;match&quot;,&quot;crossword&quot;],&quot;default&quot;:&quot;menu&quot;,&quot;tsType&quot;:&quot;'menu'|'drag'|'flip'|'match'|'crossword'&quot;},&quot;minutes&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:1,&quot;max&quot;:15,&quot;unit&quot;:&quot;min&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;menuSlide&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:10,&quot;min&quot;:0,&quot;max&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Navigasi&quot;}}">
+class Component extends DCLogic {
+  steps = [
+    { id: 'e', t: 'EMPATI', c: '#FFD93D' },
+    { id: 'm', t: 'KENAL PASTI MASALAH', c: '#A3E635' },
+    { id: 'i', t: 'JANA IDEA', c: '#22D3EE' },
+    { id: 'p', t: 'BINA PROTOTAIP', c: '#EC4899' },
+    { id: 'u', t: 'UJI', c: '#7DD3FC' }
+  ];
+  poolOrder = ['i', 'u', 'e', 'p', 'm'];
+  deck = [
+    { id: 'c1', t: 'EMPATI', d: 'Memahami perasaan dan keperluan pengguna.', c: '#FFD93D' },
+    { id: 'c2', t: 'MASALAH', d: 'Pernyataan jelas tentang perkara yang perlu diselesaikan.', c: '#A3E635' },
+    { id: 'c3', t: 'IDEA', d: 'Banyak cadangan penyelesaian, belum dinilai.', c: '#22D3EE' },
+    { id: 'c4', t: 'PROTOTAIP', d: 'Versi awal yang murah dan cepat untuk dicuba.', c: '#EC4899' },
+    { id: 'c5', t: 'UJI', d: 'Mencuba prototaip dan mencatat hasil sebenar.', c: '#7DD3FC' },
+    { id: 'c6', t: 'PENAMBAH BAIKAN BERTERUSAN', d: 'Membaiki dan mencuba semula selepas melihat hasil ujian.', c: '#FFD93D' }
+  ];
+  pairs = [
+    { id: 'p1', l: 'EMPATI', r: 'Temu bual pekerja kantin tentang sisa makanan.', c: '#FFD93D' },
+    { id: 'p2', l: 'KENAL PASTI MASALAH', r: 'Tulis: banyak makanan dibuang setiap hari di kantin.', c: '#A3E635' },
+    { id: 'p3', l: 'JANA IDEA', r: 'Senaraikan sepuluh cara menggunakan semula sisa makanan.', c: '#22D3EE' },
+    { id: 'p4', l: 'BINA PROTOTAIP', r: 'Bina satu tong kompos kecil daripada baldi terpakai.', c: '#EC4899' },
+    { id: 'p5', l: 'UJI', r: 'Periksa bau dan kelembapan kompos selama tujuh hari.', c: '#7DD3FC' }
+  ];
+  rightOrder = ['p3', 'p5', 'p1', 'p4', 'p2'];
+  words = [
+    { w: 'EMPATI', r: 1, c: 3, dir: 'a', num: 1, clue: 'Memahami perasaan dan keperluan pengguna.' },
+    { w: 'PROTOTAIP', r: 1, c: 5, dir: 'd', num: 2, clue: 'Versi awal yang boleh dicuba.' },
+    { w: 'UJI', r: 4, c: 7, dir: 'a', num: 3, clue: 'Mencuba prototaip dan mencatat hasilnya.' },
+    { w: 'IDEA', r: 4, c: 9, dir: 'd', num: 4, clue: 'Cadangan penyelesaian yang dijana banyak-banyak.' },
+    { w: 'MASALAH', r: 7, c: 4, dir: 'a', num: 5, clue: 'Perkara yang perlu diselesaikan.' }
+  ];
+  state = {
+    slots: [null, null, null, null, null],
+    sel: null,
+    dragChecked: false,
+    flips: {},
+    mSel: null,
+    mDone: {},
+    mWrong: null,
+    letters: {},
+    cwChecked: false,
+    shake: null
+  };
+
+  key = 'dt-games-scores-v1';
+  order = ['drag', 'flip', 'match', 'crossword'];
+
+  componentDidMount() {
+    const stage = document.querySelector('deck-stage');
+    if (stage && !stage.hasAttribute('no-rail')) {
+      stage.setAttribute('no-rail', 'true');
+      window.dispatchEvent(new Event('resize'));
+    }
+    this._onScore = () => this.forceUpdate();
+    window.addEventListener('dt-score', this._onScore);
+    window.addEventListener('resize', this._onScore);
+    this._t = window.setTimeout(this._onScore, 400);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('dt-score', this._onScore);
+    window.removeEventListener('resize', this._onScore);
+    window.clearTimeout(this._t);
+  }
+  scores() {
+    try { return JSON.parse(window.localStorage.getItem(this.key) || '{}'); } catch (e) { return {}; }
+  }
+  award(game, pts) {
+    const s = this.scores();
+    if ((s[game] || 0) < pts) {
+      s[game] = pts;
+      try { window.localStorage.setItem(this.key, JSON.stringify(s)); } catch (e) {}
+    }
+    window.dispatchEvent(new CustomEvent('dt-score'));
+  }
+  shakeAnim = 'dtShake .5s cubic-bezier(.36,.07,.19,.97) both';
+
+  sfx(name) {
+    const s = window.DTSFX;
+    if (s && s[name]) { try { s[name](); } catch (e) {} }
+  }
+  buzz(key, extra) {
+    this.sfx('wrong');
+    window.clearTimeout(this._sh);
+    this.setState(Object.assign({ shake: key }, extra || {}));
+    this._sh = window.setTimeout(() => this.setState({ shake: null }), 560);
+  }
+
+  stars(pts) {
+    return pts >= 90 ? '★★★' : pts >= 60 ? '★★' : pts > 0 ? '★' : '☆☆☆';
+  }
+  wrapRef = React.createRef();
+  lRefs = {};
+  rRefs = {};
+
+  relScale() {
+    const el = this.wrapRef.current;
+    if (!el || !el.offsetWidth) return 1;
+    return el.getBoundingClientRect().width / el.offsetWidth || 1;
+  }
+  edgePoint(node, side) {
+    const el = this.wrapRef.current;
+    if (!el || !node) return null;
+    const c = el.getBoundingClientRect();
+    const r = node.getBoundingClientRect();
+    const s = this.relScale();
+    const l = (r.left - c.left) / s;
+    const t = (r.top - c.top) / s;
+    return { x: side === 'r' ? l + r.width / s : l, y: t + r.height / s / 2 };
+  }
+  makeArrow(a, b, color, opacity) {
+    if (!a || !b) return null;
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    return {
+      x: a.x, y: a.y - 3.5, color, opacity: opacity,
+      len: Math.max(8, d - 22),
+      angle: Math.atan2(dy, dx) * 180 / Math.PI
+    };
+  }
+  startDrag(id) {
+    return e => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (this.state.mDone[id]) return;
+      const el = this.wrapRef.current;
+      const toLocal = ev => {
+        const c = el.getBoundingClientRect();
+        const s = this.relScale();
+        return { x: (ev.clientX - c.left) / s, y: (ev.clientY - c.top) / s };
+      };
+      this._move = ev => { ev.preventDefault(); this.setState({ dragPt: toLocal(ev) }); };
+      this._up = ev => {
+        window.removeEventListener('pointermove', this._move);
+        window.removeEventListener('pointerup', this._up);
+        window.removeEventListener('pointercancel', this._up);
+        let hit = null;
+        Object.keys(this.rRefs).forEach(k => {
+          const n = this.rRefs[k];
+          if (!n) return;
+          const r = n.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom) hit = k;
+        });
+        if (hit && hit === id) {
+          const mDone = Object.assign({}, this.state.mDone, { [hit]: true });
+          this.award('match', Object.keys(mDone).length * 20);
+          this.sfx(Object.keys(mDone).length === this.pairs.length ? 'win' : 'correct');
+          this.setState({ mDone, dragFrom: null, dragPt: null, mWrong: null, mSel: null });
+        } else if (hit) {
+          this.buzz(hit, { dragFrom: null, dragPt: null, mWrong: hit, mSel: null });
+        } else {
+          this.setState({ dragFrom: null, dragPt: null, mWrong: null, mSel: null });
+        }
+      };
+      window.addEventListener('pointermove', this._move, { passive: false });
+      window.addEventListener('pointerup', this._up);
+      window.addEventListener('pointercancel', this._up);
+      this.setState({ dragFrom: id, dragPt: null, mSel: id, mWrong: null });
+    };
+  }
+
+  nav(i) {
+    this.sfx('whoosh');
+    const stage = document.querySelector('deck-stage');
+    if (stage && typeof stage.goTo === 'function') stage.goTo(i);
+  }
+
+  grid() {
+    const map = {};
+    this.words.forEach(w => {
+      for (let i = 0; i < w.w.length; i++) {
+        const r = w.dir === 'd' ? w.r + i : w.r;
+        const c = w.dir === 'a' ? w.c + i : w.c;
+        const k = r + '-' + c;
+        map[k] = map[k] || { ans: w.w[i] };
+        if (i === 0) map[k].num = w.num;
+      }
+    });
+    return map;
+  }
+
+  reset = () => this.setState({
+    slots: [null, null, null, null, null], sel: null, dragChecked: false,
+    flips: {}, mSel: null, mDone: {}, mWrong: null, letters: {}, cwChecked: false
+  });
+
+  place(idx, id) {
+    this.sfx('click');
+    const slots = this.state.slots.map(s => (s === id ? null : s));
+    slots[idx] = id;
+    this.setState({ slots, sel: null, dragChecked: false });
+  }
+
+  renderVals() {
+    const game = this.props.game || 'drag';
+    const mins = this.props.minutes ?? 4;
+    const st = this.state;
+    const menuSlide = this.props.menuSlide ?? 11;
+    const gi = this.order.indexOf(game);
+    const scores = this.scores();
+    const names = {
+      drag: 'SUSUN 5 LANGKAH', flip: 'KAD ISTILAH',
+      match: 'SUAI PILIH', crossword: 'SILANG KATA'
+    };
+    const questions = {
+      drag: 'Apakah 5 langkah utama Design Thinking?',
+      flip: 'Apakah maksud istilah ini?',
+      match: 'Suaikan pasangan tindakan yang betul.',
+      crossword: 'Boleh anda isi 5 perkataan ini?'
+    };
+    const num = { drag: '1', flip: '2', match: '3', crossword: '4' }[game];
+    const kind = {
+      drag: 'TARIK & LEPAS · BERKUMPULAN',
+      flip: 'KAD SELAK · BERPASANGAN',
+      match: 'SUAI PILIH · INDIVIDU',
+      crossword: 'SILANG KATA · BERPASANGAN'
+    }[game];
+    const title = {
+      drag: 'APAKAH 5 LANGKAH UTAMA DESIGN THINKING?',
+      flip: 'APAKAH MAKSUD ISTILAH INI?',
+      match: 'SUAIKAN PASANGAN TINDAKAN YANG BETUL',
+      crossword: 'BOLEH ANDA ISI 5 PERKATAAN INI?',
+      menu: 'PILIH PERMAINAN ANDA'
+    }[game];
+    const howTo = {
+      drag: 'Tarik kad ke petak 1 hingga 5, kemudian tekan PERIKSA.',
+      flip: 'Teka maksudnya dahulu, kemudian klik kad.',
+      match: 'Tarik anak panah dari langkah ke tindakannya — atau klik dua-dua.',
+      crossword: 'Taip satu huruf setiap petak, kemudian tekan PERIKSA.',
+      menu: 'Klik mana-mana permainan untuk mula. Mata anda disimpan di sini.'
+    }[game];
+
+    const total = this.order.reduce((a, g) => a + (scores[g] || 0), 0);
+    const v = {
+      gameNo: num, kindLabel: kind, title, howTo,
+      minuteLabel: mins + ' MINIT',
+      isDrag: game === 'drag', isFlip: game === 'flip',
+      isMatch: game === 'match', isCross: game === 'crossword',
+      isMenu: game === 'menu', isGame: game !== 'menu',
+      onReset: this.reset, scoreLabel: '',
+      pool: [], slots: [], cards: [], left: [], right: [], cells: [], clues: [],
+      matchHint: '', hintInk: '#A7B6D6', arrows: [], wrapRef: null,
+      onMenu: () => this.nav(menuSlide),
+      onNext: () => this.nav(menuSlide + 1 + ((gi + 1) % this.order.length)),
+      nextLabel: gi === this.order.length - 1 ? 'PERMAINAN 1 →' : 'PERMAINAN ' + (gi + 2) + ' →',
+      menuItems: this.order.map((g, i) => ({
+        no: String(i + 1), name: names[g], q: questions[g],
+        border: ['#FFD93D', '#22D3EE', '#A3E635', '#EC4899'][i],
+        pts: (scores[g] || 0) + ' / 100 MATA',
+        stars: this.stars(scores[g] || 0),
+        onPlay: () => this.nav(menuSlide + 1 + i)
+      })),
+      totalLabel: total + ' / 400',
+      totalPct: Math.round((total / 400) * 100) + '%',
+      rankLabel: total >= 360 ? 'PEREKA HEBAT' : total >= 240 ? 'PEREKA MUDA' : total >= 100 ? 'SEDANG MAJU' : 'MULA MAIN',
+      onClearAll: () => {
+        try { window.localStorage.setItem(this.key, '{}'); } catch (e) {}
+        window.dispatchEvent(new CustomEvent('dt-score'));
+      }
+    };
+
+    if (game !== 'menu') {
+      const mine = scores[game] || 0;
+      v.scoreLabel = this.stars(mine) + '  ' + mine + ' MATA';
+    }
+
+    if (game === 'drag') {
+      const used = st.slots.filter(Boolean);
+      v.pool = this.poolOrder.filter(id => used.indexOf(id) < 0).map(id => {
+        const s = this.steps.find(x => x.id === id);
+        return {
+          t: s.t, border: s.c,
+          glow: st.sel === id ? '0 0 0 6px rgba(255,217,61,.35)' : 'none',
+          onClick: () => this.setState({ sel: st.sel === id ? null : id }),
+          onDragStart: e => { this.dragId = id; this.sfx('click'); e.dataTransfer.effectAllowed = 'move'; }
+        };
+      });
+      v.slots = st.slots.map((id, i) => {
+        const s = id ? this.steps.find(x => x.id === id) : null;
+        const right = this.steps[i].id === id;
+        let bg = '#0A1A4D', border = '#3C5B9E';
+        if (s) { bg = '#0F2A6B'; border = s.c; }
+        if (st.dragChecked && s) { bg = right ? '#14532D' : '#4C1230'; border = right ? '#A3E635' : '#EC4899'; }
+        return {
+          n: String(i + 1), t: s ? s.t : 'Letak kad di sini',
+          bg, border, ink: s ? '#ffffff' : '#6B84BC',
+          anim: st.shake === 'drag' && st.dragChecked && !right ? this.shakeAnim : 'none',
+          onDragOver: e => e.preventDefault(),
+          onDrop: e => { e.preventDefault(); if (this.dragId) { this.place(i, this.dragId); this.dragId = null; } },
+          onClick: () => {
+            if (st.sel) this.place(i, st.sel);
+            else if (id) this.setState({ slots: st.slots.map(x => (x === id ? null : x)), dragChecked: false });
+          }
+        };
+      });
+      const correct = st.slots.filter((id, i) => id && this.steps[i].id === id).length;
+      if (st.dragChecked) v.scoreLabel = correct + ' / 5 BETUL · ' + v.scoreLabel;
+      v.onCheck = () => {
+        const c = this.state.slots.filter((id, i) => id && this.steps[i].id === id).length;
+        this.award('drag', c * 20);
+        if (c === 5) { this.sfx('win'); this.setState({ dragChecked: true, sel: null, shake: null }); }
+        else this.buzz('drag', { dragChecked: true, sel: null });
+      };
+    }
+
+    if (game === 'flip') {
+      v.cards = this.deck.map(c => {
+        const open = !!st.flips[c.id];
+        return {
+          t: c.t, d: c.d, front: !open, back: open,
+          bg: open ? c.c : '#0A1A4D', border: c.c,
+          onClick: () => {
+            const flips = Object.assign({}, st.flips, { [c.id]: !open });
+            const n = Object.keys(flips).filter(k => flips[k]).length;
+            this.award('flip', Math.round(n / this.deck.length * 100));
+            this.sfx(n === this.deck.length ? 'win' : 'flip');
+            this.setState({ flips });
+          }
+        };
+      });
+      v.scoreLabel = Object.keys(st.flips).filter(k => st.flips[k]).length + ' / 6 DIBUKA · ' + v.scoreLabel;
+      v.onFlipAll = () => {
+        const all = {};
+        this.deck.forEach(c => { all[c.id] = true; });
+        this.award('flip', 100);
+        this.sfx('win');
+        this.setState({ flips: all });
+      };
+    }
+
+    if (game === 'match') {
+      v.wrapRef = this.wrapRef;
+      v.left = this.pairs.map(p => {
+        const done = !!st.mDone[p.id];
+        const on = st.mSel === p.id;
+        return {
+          t: p.l,
+          ref: n => { this.lRefs[p.id] = n; },
+          onDown: this.startDrag(p.id),
+          showHandle: !done,
+          bg: done ? '#14532D' : on ? '#2A1055' : '#0A1A4D',
+          border: done ? '#A3E635' : on ? '#FFD93D' : p.c,
+          ink: done ? '#A3E635' : '#ffffff',
+          onClick: () => { if (!done) this.setState({ mSel: on ? null : p.id, mWrong: null }); }
+        };
+      });
+      v.right = this.rightOrder.map(id => {
+        const p = this.pairs.find(x => x.id === id);
+        const done = !!st.mDone[id];
+        const wrong = st.mWrong === id;
+        return {
+          t: p.r,
+          ref: n => { this.rRefs[id] = n; },
+          anim: st.shake === id ? this.shakeAnim : 'none',
+          bg: done ? '#14532D' : wrong ? '#4C1230' : '#0A1A4D',
+          border: done ? '#A3E635' : wrong ? '#EC4899' : '#3C5B9E',
+          ink: done ? '#A3E635' : '#ffffff',
+          onClick: () => {
+            if (done || !st.mSel) return;
+            if (st.mSel === id) {
+              const mDone = Object.assign({}, st.mDone, { [id]: true });
+              this.award('match', Object.keys(mDone).length * 20);
+              this.sfx(Object.keys(mDone).length === this.pairs.length ? 'win' : 'correct');
+              this.setState({ mDone, mSel: null, mWrong: null });
+            }
+            else this.buzz(id, { mWrong: id, mSel: null });
+          }
+        };
+      });
+      const arrows = [];
+      if (this.wrapRef.current) {
+        this.pairs.forEach(p => {
+          if (!st.mDone[p.id]) return;
+          const a = this.makeArrow(this.edgePoint(this.lRefs[p.id], 'r'), this.edgePoint(this.rRefs[p.id], 'l'), '#A3E635', 1);
+          if (a) arrows.push(a);
+        });
+        if (st.dragFrom && st.dragPt) {
+          const from = this.edgePoint(this.lRefs[st.dragFrom], 'r');
+          const a = this.makeArrow(from, st.dragPt, '#FFD93D', 0.95);
+          if (a) arrows.push(a);
+        }
+      }
+      v.arrows = arrows;
+      const n = Object.keys(st.mDone).length;
+      v.scoreLabel = n + ' / 5 SEPADAN · ' + v.scoreLabel;
+      v.matchHint = st.mWrong ? 'Belum sepadan. Cuba lagi.' : st.dragFrom ? 'Lepaskan pada tindakan yang betul.' : st.mSel ? 'Kini pilih tindakan di sebelah kanan.' : n === 5 ? 'Semua sepadan. Syabas!' : 'Tarik anak panah dari sebelah kiri.';
+      v.hintInk = st.mWrong ? '#F9A8D4' : n === 5 ? '#A3E635' : '#A7B6D6';
+    }
+
+    if (game === 'crossword') {
+      const map = this.grid();
+      const cells = [];
+      for (let r = 1; r <= 9; r++) {
+        for (let c = 1; c <= 10; c++) {
+          const k = r + '-' + c;
+          const cell = map[k];
+          if (!cell) { cells.push({ on: false, bg: 'transparent', val: '', num: '', anim: 'none' }); continue; }
+          const val = st.letters[k] || '';
+          let border = '#7DD3FC', bg = '#FFFCEB', ink = '#0A1A4D', bad = false;
+          if (st.cwChecked && val) {
+            const ok = val.toUpperCase() === cell.ans;
+            bad = !ok;
+            border = ok ? '#3D6A08' : '#BE185D';
+            bg = ok ? '#DCFCE7' : '#FFE4EF';
+            ink = ok ? '#14532D' : '#9D174D';
+          }
+          cells.push({
+            on: true, bg, border, ink, val, num: cell.num ? String(cell.num) : '',
+            anim: bad && st.shake === 'cw' ? this.shakeAnim : 'none',
+            onInput: e => {
+              const ch = (e.target.value || '').slice(-1).toUpperCase();
+              this.setState({ letters: Object.assign({}, st.letters, { [k]: ch }), cwChecked: false });
+            }
+          });
+        }
+      }
+      v.cells = cells;
+      v.clues = this.words.slice().sort((a, b) => a.num - b.num).map(w => ({
+        num: String(w.num), dir: w.dir === 'a' ? 'MELINTANG' : 'MENEGAK', text: w.clue
+      }));
+      const all = Object.keys(map).length;
+      const right = Object.keys(map).filter(k => (st.letters[k] || '').toUpperCase() === map[k].ans).length;
+      if (st.cwChecked) v.scoreLabel = right + ' / ' + all + ' HURUF · ' + v.scoreLabel;
+      v.onCheck = () => {
+        const r = Object.keys(map).filter(k => (this.state.letters[k] || '').toUpperCase() === map[k].ans).length;
+        this.award('crossword', Math.round(r / all * 100));
+        if (r === all) { this.sfx('win'); this.setState({ cwChecked: true, shake: null }); }
+        else this.buzz('cw', { cwChecked: true });
+      };
+    }
+
+    return v;
+  }
+}
+</script>
+</body>
+</html>

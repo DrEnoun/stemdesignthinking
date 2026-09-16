@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kaedah Inovasi: Design Thinking</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#06122f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Design Thinking">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; background:#06122f; color:#fff; font-family:'Nunito',sans-serif;
+         display:flex; align-items:center; justify-content:center; padding:20px; padding-bottom:calc(20px + env(safe-area-inset-bottom)); }
+  .card { width:100%; max-width:640px; background:#0A1A4D; border-radius:26px; padding:28px; }
+  .k { font-size:12px; letter-spacing:2px; font-weight:800; color:#A3E635; }
+  h1 { font-family:'Baloo 2',cursive; font-size:clamp(26px,7vw,40px); font-weight:800; color:#FFD93D; margin:10px 0 6px; line-height:1.05; }
+  p.sub { color:#A7B6D6; font-weight:700; margin:0 0 24px; font-size:clamp(14px,3.6vw,17px); }
+  a.btn, button.btn { display:flex; align-items:center; gap:14px; width:100%; text-align:left; text-decoration:none; cursor:pointer;
+        background:#0F2A6B; border:4px solid #22D3EE; border-radius:18px; padding:16px 20px; min-height:64px;
+        color:#22D3EE; font-family:'Nunito',sans-serif; font-weight:800; font-size:clamp(15px,4vw,19px); margin-bottom:12px; }
+  a.btn:hover, button.btn:hover { border-color:#FFD93D; color:#FFD93D; }
+  button.install { background:#FFD93D; border-color:#FFD93D; color:#0A1A4D; display:none; }
+  .note { font-size:13px; font-weight:700; color:#6B84BC; line-height:1.45; margin:16px 0 0; }
+  svg { flex:none; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="k">14TH MYIO 2026 · KARNIVAL MINI STEM</div>
+    <h1>Kaedah Inovasi: Design Thinking</h1>
+    <p class="sub">Dr. Nur ‘Ainun Mokhtar · Fakulti Farmasi, UiTM Kampus Bertam</p>
+
+    <a class="btn" href="Design Thinking Deck.dc.html">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+      Versi slaid — 17 slaid + 4 permainan
+    </a>
+    <a class="btn" href="Design Thinking Dokumen.dc.html">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h4"/><path d="M9 13h6M9 17h6"/></svg>
+      Versi dokumen — baca &amp; cetak
+    </a>
+    <button class="btn install" id="install">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>
+      Pasang sebagai aplikasi
+    </button>
+
+    <p class="note">Boleh dipasang pada telefon dan digunakan tanpa internet. Untuk permainan, pusingkan telefon ke kedudukan melintang.</p>
+  </div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+  var prompt = null;
+  var btn = document.getElementById('install');
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    prompt = e;
+    btn.style.display = 'flex';
+  });
+  btn.addEventListener('click', function () {
+    if (prompt) { prompt.prompt(); prompt = null; btn.style.display = 'none'; }
+  });
+</script>
+</body>
+</html>
